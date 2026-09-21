@@ -30,3 +30,13 @@ output "ecr_repository_url" {
   description = "URL of the ECR repository for the application"
   value       = aws_ecr_repository.app.repository_url
 }
+
+output "github_actions_role_arn" {
+  description = "IAM role ARN used by GitHub Actions through OIDC"
+  value       = aws_iam_role.github_actions.arn
+}
+
+output "target_group_arn" {
+  description = "ALB target group ARN"
+  value       = aws_lb_target_group.app.arn
+}
