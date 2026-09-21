@@ -427,7 +427,8 @@ resource "aws_iam_role" "github_actions" {
         Condition = {
           StringEquals = {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-            "token.actions.githubusercontent.com:sub" = "repo:yabeshisaac/aws-devops-platform:ref:refs/heads/main"
+
+            "token.actions.githubusercontent.com:sub" = "repo:yabeshisaac@183281432/aws-devops-platform@1379302021:ref:refs/heads/main"
           }
         }
       }
@@ -492,4 +493,32 @@ resource "aws_iam_role_policy" "github_actions" {
       }
     ]
   })
+}
+
+# --------------------------------------------------
+# CloudWatch Monitoring
+# --------------------------------------------------
+
+resource "aws_cloudwatch_metric_alarm" "alb_5xx_errors" {
+  alarm_name        = "${var.project_name}-${var.environment}-alb-5xx-errors"
+  alarm_description = "Triggers when the application behind the ALB returns 5XX errors"
+
+  namespace   = "AWS/ApplicationELB"
+  metric_name = "HTTPCode_Target_5XX_Count"
+  statistic   = "Sum"
+
+  period              = 60
+  evaluation_periods  = 1
+  threshold           = 5
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+
+  treat_missing_data = "notBreaching"
+
+  dimensions = {
+    LoadBalancer = aws_lb.app.arn_suffix
+  }
+
+  tags = {
+    Name = "${var.project_name}-${var.environment}-alb-5xx-alarm"
+  }
 }
