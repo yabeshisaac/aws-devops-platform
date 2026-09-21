@@ -14,3 +14,10 @@ __pycache__/
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars

@@ -1,0 +1,27 @@
+output "vpc_id" {
+  description = "ID of the project VPC"
+  value       = aws_vpc.main.id
+}
+
+output "public_subnet_1_id" {
+  description = "ID of public subnet 1"
+  value       = aws_subnet.public_1.id
+}
+
+output "public_subnet_2_id" {
+  description = "ID of public subnet 2"
+  value       = aws_subnet.public_2.id
+}
+
+output "availability_zones" {
+  description = "Availability Zones used by the public subnets"
+  value = [
+    aws_subnet.public_1.availability_zone,
+    aws_subnet.public_2.availability_zone
+  ]
+}
+
+output "internet_gateway_id" {
+  description = "ID of the Internet Gateway"
+  value       = aws_internet_gateway.main.id
+}
