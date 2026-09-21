@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS DevOps Platform</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b1120;
+            color: #e5e7eb;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 8%;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .status {
+            color: #22c55e;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 84%;
+            max-width: 1100px;
+            margin: 70px auto;
+        }
+
+        .tag {
+            color: #38bdf8;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .card h3 {
+            color: #94a3b8;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .card p {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .healthy {
+            color: #22c55e;
+        }
+
+        .deployment {
+            margin-top: 35px;
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .deployment h2 {
+            margin-bottom: 22px;
+        }
+
+        .deployment-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .deployment-row:last-child {
+            border-bottom: none;
+        }
+
+        .pending {
+            color: #f59e0b;
+        }
+
+        footer {
+            margin-top: 50px;
+            color: #64748b;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="brand">AWS DevOps Platform</div>
+    <div class="status">● SYSTEM OPERATIONAL</div>
+</nav>
+
+<main class="container">
+
+    <div class="tag">CLOUD-NATIVE DEPLOYMENT</div>
+
+    <h1>DevOps Deployment Dashboard</h1>
+
+    <p class="subtitle">
+        Containerized application built to demonstrate a production-style
+        DevOps workflow using Docker, Infrastructure as Code, CI/CD and AWS.
+    </p>
+
+    <section class="grid">
+
+        <div class="card">
+            <h3>Application</h3>
+            <p>Flask API</p>
+        </div>
+
+        <div class="card">
+            <h3>Environment</h3>
+            <p>Development</p>
+        </div>
+
+        <div class="card">
+            <h3>Container</h3>
+            <p>Docker</p>
+        </div>
+
+        <div class="card">
+            <h3>Health</h3>
+            <p class="healthy">● Healthy</p>
+        </div>
+
+    </section>
+
+    <section class="deployment">
+
+        <h2>Deployment Pipeline</h2>
+
+        <div class="deployment-row">
+            <span>Application Containerized</span>
+            <span class="healthy">✓ COMPLETE</span>
+        </div>
+
+        <div class="deployment-row">
+            <span>Infrastructure as Code</span>
+            <span class="pending">PENDING</span>
+        </div>
+
+        <div class="deployment-row">
+            <span>AWS Deployment</span>
+            <span class="pending">PENDING</span>
+        </div>
+
+        <div class="deployment-row">
+            <span>CI/CD Pipeline</span>
+            <span class="pending">PENDING</span>
+        </div>
+
+        <div class="deployment-row">
+            <span>Monitoring & Logging</span>
+            <span class="pending">PENDING</span>
+        </div>
+
+    </section>
+
+    <footer>
+        AWS DevOps Platform • Version 1.0.0
+    </footer>
+
+</main>
+
+</body>
+</html>
