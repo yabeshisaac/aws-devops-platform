@@ -104,6 +104,7 @@ resource "aws_route_table_association" "public_2" {
   route_table_id = aws_route_table.public.id
 }
 
+
 # --------------------------------------------------
 # Elastic Container Registry
 # --------------------------------------------------
@@ -120,6 +121,35 @@ resource "aws_ecr_repository" "app" {
     Name = "${var.project_name}-${var.environment}-ecr"
   }
 }
+
+
+# --------------------------------------------------
+# ECR Lifecycle Policy
+# --------------------------------------------------
+
+resource "aws_ecr_lifecycle_policy" "app" {
+  repository = aws_ecr_repository.app.name
+
+  policy = jsonencode({
+    rules = [
+      {
+        rulePriority = 1
+        description  = "Keep only the 10 most recent container images"
+
+        selection = {
+          tagStatus   = "any"
+          countType   = "imageCountMoreThan"
+          countNumber = 10
+        }
+
+        action = {
+          type = "expire"
+        }
+      }
+    ]
+  })
+}
+
 
 # --------------------------------------------------
 # ECS Cluster
@@ -138,6 +168,7 @@ resource "aws_ecs_cluster" "main" {
   }
 }
 
+
 # --------------------------------------------------
 # CloudWatch Log Group
 # --------------------------------------------------
@@ -150,6 +181,7 @@ resource "aws_cloudwatch_log_group" "app" {
     Name = "${var.project_name}-${var.environment}-logs"
   }
 }
+
 
 # --------------------------------------------------
 # ECS Task Execution Role
@@ -175,10 +207,12 @@ resource "aws_iam_role" "ecs_task_execution" {
   })
 }
 
+
 resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   role       = aws_iam_role.ecs_task_execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
 
 # --------------------------------------------------
 # ECS Fargate Task Definition
@@ -225,6 +259,7 @@ resource "aws_ecs_task_definition" "app" {
   }
 }
 
+
 # --------------------------------------------------
 # ALB Security Group
 # --------------------------------------------------
@@ -254,6 +289,7 @@ resource "aws_security_group" "alb" {
     Name = "${var.project_name}-${var.environment}-alb-sg"
   }
 }
+
 
 # --------------------------------------------------
 # ECS Security Group
@@ -285,6 +321,7 @@ resource "aws_security_group" "ecs" {
   }
 }
 
+
 # --------------------------------------------------
 # Application Load Balancer
 # --------------------------------------------------
@@ -304,6 +341,7 @@ resource "aws_lb" "app" {
     Name = "${var.project_name}-${var.environment}-alb"
   }
 }
+
 
 # --------------------------------------------------
 # ALB Target Group
@@ -332,6 +370,7 @@ resource "aws_lb_target_group" "app" {
   }
 }
 
+
 # --------------------------------------------------
 # ALB HTTP Listener
 # --------------------------------------------------
@@ -346,6 +385,7 @@ resource "aws_lb_listener" "http" {
     target_group_arn = aws_lb_target_group.app.arn
   }
 }
+
 
 # --------------------------------------------------
 # ECS Fargate Service
@@ -394,11 +434,13 @@ resource "aws_ecs_service" "app" {
   }
 }
 
+
 # --------------------------------------------------
 # GitHub Actions OIDC
 # --------------------------------------------------
 
 data "aws_caller_identity" "current" {}
+
 
 resource "aws_iam_openid_connect_provider" "github" {
   url = "https://token.actions.githubusercontent.com"
@@ -407,6 +449,7 @@ resource "aws_iam_openid_connect_provider" "github" {
     "sts.amazonaws.com"
   ]
 }
+
 
 resource "aws_iam_role" "github_actions" {
   name = "${var.project_name}-${var.environment}-github-actions-role"
@@ -439,6 +482,7 @@ resource "aws_iam_role" "github_actions" {
     Name = "${var.project_name}-${var.environment}-github-actions-role"
   }
 }
+
 
 resource "aws_iam_role_policy" "github_actions" {
   name = "${var.project_name}-${var.environment}-github-actions-policy"
@@ -494,6 +538,7 @@ resource "aws_iam_role_policy" "github_actions" {
     ]
   })
 }
+
 
 # --------------------------------------------------
 # CloudWatch Monitoring
