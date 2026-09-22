@@ -494,7 +494,7 @@ resource "aws_iam_role_policy" "github_actions" {
     Statement = [
 
       # ------------------------------------------
-      # ECR permissions
+      # ECR authentication
       # ------------------------------------------
       {
         Effect = "Allow"
@@ -506,6 +506,9 @@ resource "aws_iam_role_policy" "github_actions" {
         Resource = "*"
       },
 
+      # ------------------------------------------
+      # Push container images to project ECR
+      # ------------------------------------------
       {
         Effect = "Allow"
 
@@ -521,7 +524,7 @@ resource "aws_iam_role_policy" "github_actions" {
       },
 
       # ------------------------------------------
-      # ECS deployment permissions
+      # ECS service deployment
       # ------------------------------------------
       {
         Effect = "Allow"
@@ -534,6 +537,39 @@ resource "aws_iam_role_policy" "github_actions" {
         Resource = [
           aws_ecs_service.app.id
         ]
+      },
+
+      # ------------------------------------------
+      # Register new ECS task definition revisions
+      # ------------------------------------------
+      {
+        Effect = "Allow"
+
+        Action = [
+          "ecs:RegisterTaskDefinition"
+        ]
+
+        Resource = "*"
+      },
+
+      # ------------------------------------------
+      # Allow GitHub Actions to pass only the
+      # project's ECS task execution role
+      # ------------------------------------------
+      {
+        Effect = "Allow"
+
+        Action = [
+          "iam:PassRole"
+        ]
+
+        Resource = aws_iam_role.ecs_task_execution.arn
+
+        Condition = {
+          StringEquals = {
+            "iam:PassedToService" = "ecs-tasks.amazonaws.com"
+          }
+        }
       }
     ]
   })
