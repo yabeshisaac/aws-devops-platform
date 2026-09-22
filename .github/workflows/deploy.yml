@@ -14,7 +14,7 @@ env:
   ECR_REPOSITORY: aws-devops-platform-dev
   ECS_CLUSTER: aws-devops-platform-dev-cluster
   ECS_SERVICE: aws-devops-platform-dev-service
-  IMAGE_TAG: 1.1
+  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   deploy:
