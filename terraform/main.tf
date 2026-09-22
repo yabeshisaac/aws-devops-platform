@@ -540,12 +540,13 @@ resource "aws_iam_role_policy" "github_actions" {
       },
 
       # ------------------------------------------
-      # Register new ECS task definition revisions
+      # Read and register ECS task definitions
       # ------------------------------------------
       {
         Effect = "Allow"
 
         Action = [
+          "ecs:DescribeTaskDefinition",
           "ecs:RegisterTaskDefinition"
         ]
 
