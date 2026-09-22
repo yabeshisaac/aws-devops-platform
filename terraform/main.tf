@@ -432,6 +432,14 @@ resource "aws_ecs_service" "app" {
   tags = {
     Name = "${var.project_name}-${var.environment}-service"
   }
+
+  # GitHub Actions owns application deployments and updates the ECS
+  # service to new task definition revisions. Terraform continues to
+  # manage the ECS service infrastructure without rolling deployments
+  # back to the bootstrap task definition.
+  lifecycle {
+    ignore_changes = [task_definition]
+  }
 }
 
 
