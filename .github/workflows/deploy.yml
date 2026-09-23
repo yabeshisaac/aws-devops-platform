@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "app/**"
+      - ".github/workflows/deploy.yml"
 
 permissions:
   id-token: write
@@ -90,7 +93,6 @@ jobs:
 
       # -----------------------------------------
       # Create deployable task definition
-      # Replace image with this commit's SHA image
       # -----------------------------------------
       - name: Create new task definition
         run: |
