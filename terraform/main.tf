@@ -434,11 +434,15 @@ resource "aws_ecs_service" "app" {
   }
 
   # GitHub Actions owns application deployments and updates the ECS
-  # service to new task definition revisions. Terraform continues to
-  # manage the ECS service infrastructure without rolling deployments
-  # back to the bootstrap task definition.
+  # service to new task definition revisions.
+  #
+  # desired_count is ignored so the service can be manually scaled
+  # to zero when not in use without Terraform starting Fargate again.
   lifecycle {
-    ignore_changes = [task_definition]
+    ignore_changes = [
+      task_definition,
+      desired_count
+    ]
   }
 }
 
